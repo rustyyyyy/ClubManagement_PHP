@@ -1,0 +1,88 @@
+<?php include 'config/branch/branch-form.php' ?>
+<?php include 'include/header.php' ?>
+<title>Branch</title>
+<link href="resource/css/styles.css" rel="stylesheet" />
+<script data-search-pseudo-elements defer src="resource/js/all.min.js"></script>
+<script src="resource/js/feather.min.js"></script>
+</head>
+
+<body>
+    <?php include 'include/navbar.php' ?>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="page-header">
+                <div class="container-fluid">
+                    <div class="page-header-content pb-2">
+                        <h1 class="page-header-title">
+                            <span> <Span style="text-transform: uppercase;">
+                                    <?php echo $title ?>
+                                </Span> Branch</span>
+                        </h1>
+
+                    </div>
+                    <?php if (!empty($errors)) : ?>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="alert alert-danger">
+                                    <?php foreach ($errors as $error) : ?>
+                                        <div><?php echo $error ?></div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+
+            <!--Start Table-->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card ">
+                            <div class="card-body">
+                                <form method="post" enctype="multipart/form-data">
+
+                                    <div class="form-group">
+                                        <label>Branch Name</label>
+                                        <input type="text" name="branch_name" value="<?php if ($title === 'edit') {
+                                                                                            echo $branch_name;
+                                                                                        } ?>" class="form-control" placeholder="Enter Branch name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input type="address" name="address" value="<?php if ($title === 'edit') {
+                                                                                        echo $address;
+                                                                                    } ?>" class="form-control checking_email" placeholder="Enter Address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" name="email" value="<?php if ($title === 'edit') {
+                                                                                    echo $email;
+                                                                                } ?>" class="form-control" placeholder="Enter Email">
+                                        <small class="error_email" style="color: red;"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contact Details</label>
+                                        <input type="text" name="contact_details" value="<?php if ($title === 'edit') {
+                                                                                                echo $contact_details;
+                                                                                            } ?>" class="form-control" placeholder="Enter Contact Details">
+                                    </div>
+                                    <a href="branch.php" class="btn btn-dark mr-2 my-1"> Cancel </a>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Table-->
+        </main>
+    </div>
+
+    <?php include 'include/script.php' ?>
+
+</body>
+
+</html>
