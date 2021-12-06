@@ -6,9 +6,33 @@ $statement->execute();
 
 $members = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-$statement = $pdo->prepare('select * from designation');
-$statement->execute();
-$designation = $statement->fetchAll(PDO::FETCH_ASSOC);
+function deginationName($designationId)
+{
+    include 'config/dbconfig.php';
+
+    $statement = $pdo->prepare('select designation_name from designation where designation_id = :id');
+    $statement->bindValue(':id', $designationId);
+    $statement->execute();
+    $designation = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($designation as $val) {
+        echo $val['designation_name'];
+    }
+}
+
+function brandName($branch_id)
+{
+    include 'config/dbconfig.php';
+
+    $statement = $pdo->prepare('select branch_name from branch where branch_id = :id');
+    $statement->bindValue(':id', $branch_id);
+    $statement->execute();
+    $branch = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($branch as $val) {
+        echo $val['branch_name'];
+    }
+}
 
 ?>
 <?php include 'include/header.php' ?>
@@ -56,54 +80,41 @@ $designation = $statement->fetchAll(PDO::FETCH_ASSOC);
                                 </thead>
                                 <tbody>
                                     <?php foreach ($members as $i => $member) : ?>
-                                            <tr>
-                                                <td><?php echo $i + 1 ?></td>
+                                        <tr>
+                                            <td><?php echo $i + 1 ?></td>
 
-                                                <td>
-                                                    <?php
+                                            <td>
+                                                <?php
+                                                deginationName($member['designation_id'])
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $member['name'] ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $member['address'] ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $member['email'] ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $member['phone_number'] ?>
+                                            </td>
+                                            <td>
+                                                <?php 
+                                                brandName($member['branch_id'])
+                                                ?>
+                                            </td>
 
-                                                    // foreach ($designation as $designation) {
+                                            <td>
+                                                <button class="btn btn-blue btn-icon"><i data-feather="edit"></i></button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-red btn-icon"><i data-feather="trash-2"></i></button>
+                                            </td>
 
-                                                    // if ($designation['designation_id'] === $member['designation_id']) {
-                                                    //     echo $designation['designation_name'];
-                                                    // }
-                                                    // }
-                                                    $result = array_search($member['designation_id'], $designation);
-                                                    echo $result;
-
-                                                    foreach ($designation as $designation => $val) {
-                                                        if ($val['designation_id'] === $member['designation_id']) {
-                                                            echo $val['designation_name'];
-                                                        }
-                                                    }
-
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $member['name'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $member['address'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $member['email'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $member['phone_number'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $member['branch_id'] ?>
-                                                </td>
-
-                                                <td>
-                                                    <button class="btn btn-blue btn-icon"><i data-feather="edit"></i></button>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-red btn-icon"><i data-feather="trash-2"></i></button>
-                                                </td>
-
-                                            </tr>
-                                        <?php endforeach; ?>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
