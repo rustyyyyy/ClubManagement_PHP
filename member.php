@@ -6,7 +6,7 @@ $statement->execute();
 
 $members = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-function deginationName($designationId)
+function getDeginationName($designationId)
 {
     include 'config/dbconfig.php';
 
@@ -20,7 +20,7 @@ function deginationName($designationId)
     }
 }
 
-function branchName($branch_id)
+function getBranchName($branch_id)
 {
     include 'config/dbconfig.php';
 
@@ -31,6 +31,24 @@ function branchName($branch_id)
 
     foreach ($branch as $val) {
         echo $val['branch_name'];
+    }
+}
+
+
+$title = $_GET['title'] ?? null;
+if ($title === 'delete') {
+
+    $id = $_GET['id'] ?? null;
+    if (!$id) {
+        header('Location: index.php');
+        exit;
+    }
+
+    $statement = $pdo->prepare("DELETE FROM members WHERE (member_id = :id);");
+    $statement->bindValue(':id', $id);
+    
+    if($statement->execute()){
+        header('Location: member.php');
     }
 }
 
@@ -85,7 +103,7 @@ function branchName($branch_id)
 
                                             <td>
                                                 <?php
-                                                deginationName($member['designation_id'])
+                                                getDeginationName($member['designation_id'])
                                                 ?>
                                             </td>
                                             <td>
@@ -102,15 +120,15 @@ function branchName($branch_id)
                                             </td>
                                             <td>
                                                 <?php 
-                                                branchName($member['branch_id'])
+                                               getBranchName($member['branch_id'])
                                                 ?>
                                             </td>
 
                                             <td>
-                                                <button class="btn btn-blue btn-icon"><i data-feather="edit"></i></button>
+                                                <a href="member-form.php?title=edit&id=<?php echo $member['member_id']?>" class="btn btn-blue btn-icon"><i data-feather="edit"></i></a>
                                             </td>
                                             <td>
-                                                <button class="btn btn-red btn-icon"><i data-feather="trash-2"></i></button>
+                                                <a href="member.php?title=delete&id=<?php echo $member['member_id']?>" class="btn btn-red btn-icon"><i data-feather="trash-2"></i></a>
                                             </td>
 
                                         </tr>
