@@ -20,7 +20,7 @@ function deginationName($designationId)
     }
 }
 
-function brandName($branch_id)
+function branchName($branch_id)
 {
     include 'config/dbconfig.php';
 
@@ -52,7 +52,7 @@ function brandName($branch_id)
                         <h1 class="page-header-title">
                             <span>Members list</span>
                         </h1>
-                        <a href="branch-form.php?title=add" title="Add new category" class="btn btn-white">
+                        <a href="member-form.php?title=add" title="Add new category" class="btn btn-white">
                             <div class="page-header-icon"><i data-feather="plus"></i></div>
                         </a>
                     </div>
@@ -102,7 +102,7 @@ function brandName($branch_id)
                                             </td>
                                             <td>
                                                 <?php 
-                                                brandName($member['branch_id'])
+                                                branchName($member['branch_id'])
                                                 ?>
                                             </td>
 
