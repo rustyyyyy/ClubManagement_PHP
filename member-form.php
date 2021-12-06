@@ -1,7 +1,5 @@
 <?php
 
-
-
 $title = $_GET['title'];
 
 if ($title === 'add') {
@@ -77,9 +75,6 @@ if ($title === 'edit') {
 
         $designation_id = $_POST['designation_id'];
 
-
-        echo $designation_id;
-
         $branch_id = $_POST['branch_id'];
 
         if (!$name) {
@@ -118,6 +113,11 @@ $statement = $pdo->prepare('select designation_id,  designation_name from design
 $statement->execute();
 $designation = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+include 'config/dbconfig.php';
+
+$statement = $pdo->prepare('select branch_id,  branch_name from branch');
+$statement->execute();
+$branch = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 function getDeginationName($designationId)
 {
@@ -133,11 +133,25 @@ function getDeginationName($designationId)
     }
 }
 
+function getBranchName($branch_id)
+{
+    include 'config/dbconfig.php';
+
+    $statement = $pdo->prepare('select branch_name from branch where branch_id = :id');
+    $statement->bindValue(':id', $branch_id);
+    $statement->execute();
+    $branch = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($branch as $val) {
+        echo $val['branch_name'];
+    }
+}
+
 ?>
 
 
 <?php include 'include/header.php' ?>
-<title>Branch</title>
+<title>Member</title>
 <link href="resource/css/styles.css" rel="stylesheet" />
 <script data-search-pseudo-elements defer src="resource/js/all.min.js"></script>
 <script src="resource/js/feather.min.js"></script>
@@ -207,10 +221,10 @@ function getDeginationName($designationId)
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Designation ID </label>
-                                        <select class="form-control " name="designation_id"  onclick="document.getElementById('myDIV').style.display = 'none';">
+                                        <label>Designation </label>
+                                        <select class="form-control " name="designation_id" onclick="document.getElementById('myDIV').style.display = 'none';">
 
-                                            
+
                                             <?php foreach ($designation as $designation) : ?>
 
                                                 <option value="<?php echo $designation['designation_id'] ?>">
@@ -219,12 +233,13 @@ function getDeginationName($designationId)
 
                                             <?php endforeach; ?>
 
-                                            <option selected id="myDIV">
-                                                <?php if ($title === 'edit') {
-                                                    getDeginationName($designation_id);
-                                                }
-                                                ?>
-                                            </option>
+                                            <?php if ($title === 'edit') : ?>
+                                                <option selected id="myDIV">
+                                                    <?php getDeginationName($designation_id);
+
+                                                    ?>
+                                                </option>
+                                            <?php endif; ?>
 
                                         </select>
                                     </div>
@@ -232,10 +247,30 @@ function getDeginationName($designationId)
 
 
                                     <div class="form-group">
-                                        <label>Branch ID </label>
-                                        <input type="text" name="branch_id" value="<?php if ($title === 'edit') {
-                                                                                        echo $branch_id;
-                                                                                    } ?>" class="form-control" placeholder="Enter branch_id">
+                                        <label>Branch </label>
+
+                                        <select class="form-control " name="branch_id" onclick="document.getElementById('myDIV2').style.display = 'none';">
+
+
+                                            <?php foreach ($branch as $branch) : ?>
+
+                                                <option value="<?php echo $branch['branch_id'] ?>">
+                                                    <?php echo $branch['branch_name'] ?>
+                                                </option>
+
+                                            <?php endforeach; ?>
+
+                                            <?php if ($title === 'edit') : ?>
+                                                <option selected id="myDIV2">
+                                                    <?php getBranchName($branch_id);
+
+                                                    ?>
+                                                </option>
+                                            <?php endif; ?>
+
+                                        </select>
+
+
                                     </div>
                                     <a href="member.php" class="btn btn-dark mr-2 my-1"> Cancel </a>
                                     <button type="submit" class="btn btn-primary">Submit</button>
