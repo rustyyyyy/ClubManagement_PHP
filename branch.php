@@ -1,4 +1,29 @@
-<?php include 'config/branch/branch.php' ?>
+<?php
+
+include 'config/dbconfig.php';
+// select qurey and execute 
+$statement = $pdo->prepare('select * from branch');
+$statement->execute();
+
+$branch = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$title = $_GET['title'] ?? null;
+if ($title === 'delete') {
+
+    $id = $_GET['id'] ?? null;
+    if (!$id) {
+        header('Location: index.php');
+        exit;
+    }
+
+    $statement = $pdo->prepare("DELETE FROM branch WHERE (branch_id = :id);");
+    $statement->bindValue(':id', $id);
+    
+    if($statement->execute()){
+        header('Location: branch.php');
+    }
+}
+?>
 <?php include 'include/header.php' ?>
 
 <title>Branch</title>
@@ -30,7 +55,7 @@
                 <div class="card mb-4">
                     <div class="card-header">All branches</div>
                     <div class="card-body">
-                        <div class="datatable table-responsive">
+                        <div class="table table-striped table-responsive">
                             <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -71,15 +96,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card mb-2">
-                            <div class="card-header bg-red text-white">
-                                <span> Branch Data Deleted Successfully! <span>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+
 
             </div>
 

@@ -8,7 +8,6 @@ $members = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 $statement = $pdo->prepare('select * from designation');
 $statement->execute();
-
 $designation = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -57,46 +56,54 @@ $designation = $statement->fetchAll(PDO::FETCH_ASSOC);
                                 </thead>
                                 <tbody>
                                     <?php foreach ($members as $i => $member) : ?>
-                                        <tr>
-                                            <td><?php echo $i + 1 ?></td>
+                                            <tr>
+                                                <td><?php echo $i + 1 ?></td>
 
-                                            <td>
+                                                <td>
+                                                    <?php
 
+                                                    // foreach ($designation as $designation) {
 
-                                                <?php
+                                                    // if ($designation['designation_id'] === $member['designation_id']) {
+                                                    //     echo $designation['designation_name'];
+                                                    // }
+                                                    // }
+                                                    $result = array_search($member['designation_id'], $designation);
+                                                    echo $result;
 
+                                                    foreach ($designation as $designation => $val) {
+                                                        if ($val['designation_id'] === $member['designation_id']) {
+                                                            echo $val['designation_name'];
+                                                        }
+                                                    }
 
-                                                //    echo $designation[$member['designation_id']].['designation_name'];
-                                                //    echo array_column($designation, 'designation_name');
-                                                
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $member['name'] ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $member['address'] ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $member['email'] ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $member['phone_number'] ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $member['branch_id'] ?>
-                                            </td>
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $member['name'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $member['address'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $member['email'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $member['phone_number'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $member['branch_id'] ?>
+                                                </td>
 
-                                            <td>
-                                                <button class="btn btn-blue btn-icon"><i data-feather="edit"></i></button>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-red btn-icon"><i data-feather="trash-2"></i></button>
-                                            </td>
+                                                <td>
+                                                    <button class="btn btn-blue btn-icon"><i data-feather="edit"></i></button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-red btn-icon"><i data-feather="trash-2"></i></button>
+                                                </td>
 
-                                        </tr>
-                                    <?php endforeach; ?>
-
+                                            </tr>
+                                        <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
